@@ -27,6 +27,9 @@ int panicButtonState = 0;
 int distance; 
 long duration;
 
+// Serial monitor stuff
+String input;
+
 void setup() {
     Serial.begin(9600);
     lcd.begin(16, 2);
@@ -78,6 +81,8 @@ void turnLED() {
             digitalWrite(buzzer, HIGH); 
             lcdDisplay();
         }
+
+        overRide();
     }
     lcd.clear();
     delay(200);
@@ -100,6 +105,20 @@ int getDistance() {
 void lcdDisplay() {
     lcd.write("Back away!!!");
     delay(200);
+}
+
+void overRide() {
+  // For Serial monitor, set "new line" to "no new line"
+  if(!Serial.available() == 0) {
+    input = String(Serial.readString());
+
+    Serial.println(input);
+    
+    if(input.equals("test")) {
+      Serial.println("Hello, world!");
+      arm = false;
+    }
+  }
 }
 
 void morseCodeMessage(int outputDevice) {
