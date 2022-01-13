@@ -31,9 +31,11 @@ long duration;
 String input;
 
 void setup() {
+    // starts Serial monitor and LCD monitor
     Serial.begin(9600);
     lcd.begin(16, 2);
 
+    // I couldn't use for loops to initialize because there aren't any patterns
     // INPUTS
     pinMode(button, INPUT);
     pinMode(panicButton, INPUT);
@@ -50,6 +52,7 @@ void loop() {
     turnLED();
 }
 
+// Controls which LED gets turned on
 void turnLED() {
     buttonState = digitalRead(button);
 
@@ -73,15 +76,12 @@ void turnLED() {
             lcdDisplay();
             morseCodeMessage(buzzer);
             // digitalWrite(buzzer, HIGH);
-            
-            
         } 
 
         if (getDistance() <= 50) {
             digitalWrite(buzzer, HIGH); 
             lcdDisplay();
         }
-
         overRide();
     }
     lcd.clear();
@@ -89,6 +89,7 @@ void turnLED() {
     digitalWrite(buzzer, LOW);
 }
 
+// finds how far object is from LCD monitor
 int getDistance() {
     digitalWrite(trig, LOW);
     delayMicroseconds(2);
@@ -102,11 +103,13 @@ int getDistance() {
     return distance;
 }
 
+// Displays "Back away!!!" to LCD monitor
 void lcdDisplay() {
     lcd.write("Back away!!!");
     delay(200);
 }
 
+// disarms alarm if "Disarm" is typed into serial monitor
 void overRide() {
   // For Serial monitor, set "new line" to "no new line"
   if(!Serial.available() == 0) {
@@ -114,15 +117,16 @@ void overRide() {
 
     Serial.println(input);
     
-    if(input.equals("test")) {
-      Serial.println("Hello, world!");
+    if(input.equals("Disarm")) {
+      Serial.println("Alarm disarmed");
       arm = false;
     }
   }
 }
 
+// converts message into morse code pattern for buzzer to play
 void morseCodeMessage(int outputDevice) {
-    // Units of time
+    // Units of time for morse code
     int unit = 100;
     int unit3 = unit * 3;
     int unit7 = unit * 7;
@@ -130,7 +134,9 @@ void morseCodeMessage(int outputDevice) {
     // "Back away criminal scum" in morse code
     // Website used: https://morsecode.world/international/translator.html
     String message = "-... .- -.-. -.- / .- .-- .- -.-- / -.-. .-. .. -- .. -. .- .-.. / ... -.-. ..- --";
-    
+
+    // Goes through every character in message and determines which morse code character it is
+    // If the character is not a morse code character (.-/[SPACE]) output "Invalid Character" and which character it was
     for(int i = 0; i < message.length(); i++) {
         Serial.println("Character: " + message.charAt(i));
 
@@ -160,9 +166,10 @@ void morseCodeMessage(int outputDevice) {
                 delay(unit7);
 
                 break;
-
+            
             default:
                 Serial.println("Invalid Character");
+                Serial.println(message.charAt[i];
         }
     }
 }
