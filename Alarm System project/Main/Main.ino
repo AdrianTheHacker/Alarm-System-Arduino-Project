@@ -169,7 +169,7 @@ void morseCodeMessage(int outputDevice) {
             
             default:
                 Serial.println("Invalid Character");
-                Serial.println(message.charAt[i];
+                Serial.println(message.charAt(i));
         }
     }
 }
