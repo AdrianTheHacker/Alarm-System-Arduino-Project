@@ -117,7 +117,7 @@ void overRide() {
 
     Serial.println(input);
     
-    if(input.equals("Disarm")) {
+    if(input.equals("1234")) {
       Serial.println("Alarm disarmed");
       arm = false;
     }
